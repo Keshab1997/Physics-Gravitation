@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 03 - অভিকর্ষ ও মহাকর্ষ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        /* CSS Variables for Theming */
+        :root {
+            --bg-color: #f0f2f5; --container-bg: #ffffff; --text-color: #333333; --heading-color-1: #d81b60;
+            --heading-color-2: #004d40; --heading-color-3: #1a237e; --accent-color: #c2185b; --blockquote-bg: #e3f2fd;
+            --blockquote-border: #2196f3; --table-header-bg: #4caf50; --table-header-text: #ffffff; --nav-button-bg: #fff;
+            --nav-button-text: #333; --nav-button-border: #ccc; --nav-active-bg: #d81b60; --box-shadow-color: rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="forest"] {
+            --bg-color: #f0f4f0; --container-bg: #ffffff; --text-color: #2c3e50; --heading-color-1: #27ae60;
+            --heading-color-2: #16a085; --heading-color-3: #2c3e50; --accent-color: #e67e22; --blockquote-bg: #e8f5e9;
+            --blockquote-border: #27ae60; --table-header-bg: #27ae60;
+        }
+        [data-theme="ocean"] {
+            --bg-color: #eef5ff; --container-bg: #ffffff; --text-color: #34495e; --heading-color-1: #2980b9;
+            --heading-color-2: #3498db; --heading-color-3: #1f618d; --accent-color: #e74c3c; --blockquote-bg: #e4f1fe;
+            --blockquote-border: #3498db; --table-header-bg: #2980b9;
+        }
+        [data-theme="sunset"] {
+            --bg-color: #fff3e0; --container-bg: #ffffff; --text-color: #4e342e; --heading-color-1: #e65100;
+            --heading-color-2: #f57c00; --heading-color-3: #d84315; --accent-color: #bf360c; --blockquote-bg: #fff8e1;
+            --blockquote-border: #f57c00; --table-header-bg: #e65100;
+        }
+        .dark-mode {
+            --bg-color: #121212; --container-bg: #1e1e1e; --text-color: #e0e0e0; --heading-color-1: #bb86fc;
+            --heading-color-2: #03dac6; --heading-color-3: #cf6679; --accent-color: #f48fb1; --blockquote-bg: #2a2a2a;
+            --blockquote-border: #03dac6; --table-header-bg: #3700b3; --nav-button-bg: #2c2c2c; --nav-button-text: #e0e0e0;
+            --nav-button-border: #555; --nav-active-bg: #bb86fc; --box-shadow-color: rgba(255, 255, 255, 0.05);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.8; margin: 0; padding: 20px; transition: background-color 0.3s, color 0.3s; }
+        header { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px 0; }
+        .logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; box-shadow: 0 4px 12px var(--box-shadow-color); }
+        .container { max-width: 900px; margin: 20px auto; background-color: var(--container-bg); padding: 30px 40px; border-radius: 12px; box-shadow: 0 4px 12px var(--box-shadow-color); transition: background-color 0.3s; }
+        h1, h2, h3, h4 { border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-top: 30px; }
+        h1 { text-align: center; font-size: 2.2em; color: var(--heading-color-1); border-bottom: none; margin: 0; }
+        h2 { font-size: 2em; color: var(--heading-color-2); }
+        h3 { font-size: 1.6em; color: var(--heading-color-3); }
+        h4 { font-size: 1.2em; color: var(--heading-color-3); border-bottom: 1px dotted #ccc; margin-top: 25px; padding-bottom: 8px; }
+        p { font-size: 1.1em; }
+        strong { color: var(--accent-color); }
+        img { max-width: 100%; height: auto; display: block; margin: 25px auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
+        .math-formula { background-color: var(--blockquote-bg); padding: 15px; margin: 15px 0; border-radius: 8px; text-align: center; font-size: 1.2em; font-family: 'Courier New', Courier, monospace; border: 1px solid var(--blockquote-border); color: var(--heading-color-1); overflow-x: auto; }
+        ol, ul { padding-left: 20px; }
+        li { margin-bottom: 10px; padding-left: 10px; }
+        .mcq-section p { margin-left: 15px; }
+        .controls-wrapper { max-width: 900px; margin: 20px auto; padding: 15px; background-color: var(--container-bg); border-radius: 10px; box-shadow: 0 4px 12px var(--box-shadow-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .theme-buttons button { padding: 8px 15px; border: 1px solid var(--nav-button-border); background-color: var(--nav-button-bg); color: var(--nav-button-text); border-radius: 5px; cursor: pointer; font-family: 'Hind Siliguri', sans-serif; font-weight: 600; transition: all 0.2s; }
+        .theme-buttons button:hover { opacity: 0.8; }
+        .dark-mode-toggle { display: flex; align-items: center; gap: 10px; }
+        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--heading-color-1); }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .navigation { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .nav-button { display: inline-block; padding: 10px 15px; border: 1px solid var(--nav-button-border); border-radius: 5px; text-decoration: none; color: var(--nav-button-text); background-color: var(--nav-button-bg); transition: background-color 0.3s, color 0.3s; font-weight: 500; }
+        .nav-button:hover { background-color: #e0e0e0; }
+        .nav-button.active { background-color: var(--nav-active-bg); color: white; border-color: var(--nav-active-bg); }
+        .home-button { background-color: #1e88e5; color: white; border-color: #1e88e5; }
+        .home-button:hover { background-color: #1565c0; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 0.9em; color: var(--text-color); opacity: 0.8; }
+        .scroll-button { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background-color: var(--heading-color-1); color: white; border: none; font-size: 24px; cursor: pointer; display: none; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000; transition: opacity 0.3s, visibility 0.3s; }
+        #scrollToBottomBtn { bottom: 80px; background-color: var(--heading-color-2); }
+        .scroll-button:hover { opacity: 0.8; }
+    </style>
+</head>
+<body data-theme="default">
+
+    <header>
+        <img src="https://dcassetcdn.com/design_img/3828066/151313/23775964/xb5tdy5af3g15z636zyxbrbm3y_image.jpg" alt="Logo" class="logo">
+        <h1>অভিকর্ষ ও মহাকর্ষ</h1>
+    </header>
+
+    <div class="controls-wrapper">
+        <div class="theme-buttons">
+            <button data-theme-name="default">Default</button>
+            <button data-theme-name="forest">Forest</button>
+            <button data-theme-name="ocean">Ocean</button>
+            <button data-theme-name="sunset">Sunset</button>
+        </div>
+        <div class="dark-mode-toggle">
+            <span>দিন/রাত</span>
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>CLASS NO: 03</h2>
+
+        <h3>পতনশীল বস্তু কাকে বলে?</h3>
+        <p>যে বস্তু কেবলমাত্র অভিকর্ষ বলের প্রভাবে (অর্থাৎ অন্য কোনো বাধা, যেমন - বায়ুর বাধা ছাড়া) উপর থেকে নিচে পড়ে, তাকে <strong>পতনশীল বস্তু</strong> (Freely Falling Body) বলে।</p>
+
+        <h3>পতনশীল বস্তুর সূত্র (গ্যালিলিওর সূত্র):</h3>
+        <ol>
+            <li><strong>প্রথম সূত্র:</strong> বায়ুহীন স্থানে একই উচ্চতা থেকে সব বস্তু (ভারী বা হালকা) একই সময়ে মাটিতে পড়ে।</li>
+            <li><strong>দ্বিতীয় সূত্র:</strong> পতনের সময় বস্তুর বেগ (v) সময়ের সমানুপাতিক (v ∝ t)। অর্থাৎ, <div class="math-formula" style="font-size: 1.1em; padding: 10px;">v = gt</div></li>
+            <li><strong>তৃতীয় সূত্র:</strong> পতনের সময় অতিক্রান্ত দূরত্ব (h) সময়ের বর্গের সমানুপাতিক (h ∝ t²)। অর্থাৎ, <div class="math-formula" style="font-size: 1.1em; padding: 10px;">h = ½gt²</div></li>
+        </ol>
+
+        <h3>কৃত্রিম উপগ্রহ কাকে বলে?</h3>
+        <p>মানুষের তৈরি যেসব বস্তু নির্দিষ্ট কক্ষপথে পৃথিবী বা অন্য কোনো গ্রহের চারপাশে ঘোরে, তাদের <strong>কৃত্রিম উপগ্রহ</strong> (Artificial Satellite) বলে।</p>
+        <p><strong>উদাহরণ:</strong> আর্যভট্ট (ভারতের প্রথম উপগ্রহ, ১৯৭৫), স্পুটনিক-১ (বিশ্বের প্রথম উপগ্রহ, ১৯৫৭)।</p>
+        <img src="https://images.pexels.com/photos/586056/pexels-photo-586056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="পৃথিবীকে কেন্দ্র করে একটি কৃত্রিম উপগ্রহ ঘুরছে।">
+
+        <h3>বড় হ্রদে জোয়ার-ভাটা দেখা যায় না কেন?</h3>
+        <p>জোয়ার-ভাটা হওয়ার জন্য চাঁদের আকর্ষণে বিশাল পরিমাণ জলের ফুলে ওঠা প্রয়োজন, যা কেবল সমুদ্র বা মহাসাগরেই সম্ভব। হ্রদের জলের পরিমাণ ও বিস্তার কম হওয়ায় চাঁদের আকর্ষণের প্রভাব সেখানে বোঝা যায় না।</p>
+
+        <div class="mcq-section">
+            <h3>MCQ বিশ্লেষণ এবং সঠিক উত্তর</h3>
+
+            <h4>প্রশ্ন ১: 'মাধ্যাকর্ষণ' আবিষ্কার করেন কে?</h4>
+            <p><strong>উত্তর:</strong> [B] নিউটন</p>
+            
+            <h4>প্রশ্ন ২: মহাকর্ষীয় ধ্রুবক (G)-এর CGS একক কী?</h4>
+            <p><strong>উত্তর:</strong> [C] cm³ sec⁻² gm⁻¹ (অথবা dyne cm²/gm²)</p>
+            <p><strong>ব্যাখ্যা:</strong> SI একক হলো Nm²/kg²।</p>
+
+            <h4>প্রশ্ন ৩: দুটি বস্তুর মধ্যে একটির ভর ও তাদের ব্যবধান দ্বিগুণ করা হলে মহাকর্ষ বলের কী পরিবর্তন হবে?</h4>
+            <p><strong>ব্যাখ্যা:</strong> নতুন বল \( F' = G \frac{(2m_1) m_2}{(2r)^2} = G \frac{2m_1 m_2}{4r^2} = \frac{1}{2} F \)</p>
+            <p><strong>উত্তর:</strong> [C] বল পূর্বের অর্ধেক হয়</p>
+
+            <h4>প্রশ্ন ৪: মহাকর্ষীয় ধ্রুবক (G)-এর মাত্রা কী?</h4>
+            <div class="math-formula">G = Fr² / m² ⟹ [MLT⁻²][L²] / [M²] = [M⁻¹L³T⁻²]</div>
+            <p><strong>উত্তর:</strong> [B] M⁻¹L³T⁻²</p>
+
+            <h4>প্রশ্ন ৫: শূন্যস্থানে একটি পালক, একটি কাঠের বল ও একটি ইস্পাতের বল একসঙ্গে ফেললে কোনটি আগে পড়বে?</h4>
+            <p><strong>উত্তর:</strong> [D] সবগুলিই সমান দ্রুততায় (কারণ শূন্যস্থানে বায়ুর বাধা থাকে না)</p>
+
+            <h4>প্রশ্ন ৬: নিম্নের কোনটি সবচেয়ে ক্ষীণ বা দুর্বল শক্তি?</h4>
+            <p><strong>উত্তর:</strong> [A] অভিকর্ষজ শক্তি (Gravitational Force)</p>
+
+            <h4>প্রশ্ন ৭: সমবৃত্তীয় গতিতে চলমান বস্তুর ত্বরণের অভিমুখ কোন দিকে হয়?</h4>
+            <p><strong>উত্তর:</strong> [D] বেগের লম্ব অভিমুখে (অর্থাৎ বৃত্তের কেন্দ্রের দিকে)</p>
+
+            <h4>প্রশ্ন ৮: হেনরি ক্যাভেন্ডিসের পরীক্ষায় G-এর মান কত পাওয়া যায়?</h4>
+            <p><strong>উত্তর:</strong> [B] 6.67×10⁻¹¹ Nm²/kg²</p>
+
+            <h4>প্রশ্ন ৯: বৃত্তাকার পথে ঘোরার সময় সুতায় বাঁধা একটি পাথর ছিঁড়ে গেলে কোন দিকে যাবে?</h4>
+            <p><strong>উত্তর:</strong> [A] পাথরটি ওই মুহূর্তের স্পর্শক বরাবর সোজা পথে যাবে</p>
+            
+            <h4>প্রশ্ন ১০: বিশ্বের আকর্ষণ তত্ত্বের প্রথম প্রবক্তা কে?</h4>
+            <p><strong>উত্তর:</strong> [C] নিউটন</p>
+            
+            <h4>প্রশ্ন ১১: দুধ মন্থন করলে যে বলের কারণে ননী আলাদা হয়, তা কী?</h4>
+            <p><strong>উত্তর:</strong> [D] কেন্দ্রাতিগ বল (Centrifugal force)</p>
+
+            <h4>প্রশ্ন ১২: একটি রকেটের সবচেয়ে বেশি শক্তি কখন লাগে?</h4>
+            <p><strong>উত্তর:</strong> [A] পৃথিবী থেকে উপরে ওঠার সময় (মাধ্যাকর্ষণ বলের বিরুদ্ধে)</p>
+            
+            <h4>প্রশ্ন ১৩: ভুল জোড়টি চিহ্নিত করো।</h4>
+            <p><strong>উত্তর:</strong> [B] সরলরেখাগামী গতি — একটি কোনো শূন্যে ছুঁড়ে দেওয়া পাথর (কারণ ছুঁড়ে দেওয়া পাথরের গতি বক্রপথ বা অধিবৃত্তাকার হয়)</p>
+
+            <h4>প্রশ্ন ১৪: কোনো বস্তুর ওজন পৃথিবীতে ৯ নিউটন। যে গ্রহের g পৃথিবীর ৯ গুণ, সেখানে ওজন কত হবে?</h4>
+            <p><strong>ব্যাখ্যা:</strong> ওজন (W) = mg। g ৯ গুণ বাড়লে ওজনও ৯ গুণ বাড়বে।</p>
+            <p><strong>উত্তর:</strong> [C] ওজন হবে পূর্বের ৯ গুণ (অর্থাৎ ৯ × ৯ = ৮১ নিউটন)</p>
+
+            <h4>প্রশ্ন ১৫: একটি বলকে ৪০ m/s বেগে উপরে ছুঁড়লে সর্বোচ্চ উচ্চতায় পৌঁছাতে কত সময় লাগবে? (g = 10 m/s² ধরে)</h4>
+            <p><strong>ব্যাখ্যা:</strong> v = u - gt => 0 = 40 - 10t => t = 4s</p>
+            <p><strong>উত্তর:</strong> [C] 4s</p>
+
+            <h4>প্রশ্ন ১৬: একটি পেন্ডুলামকে চাঁদে নিয়ে গেলে সেটি কীভাবে চলবে?</h4>
+            <p><strong>ব্যাখ্যা:</strong> চাঁদে g প্রায় ৬ ভাগের ১ ভাগ। দোলনকাল (T) ∝ 1/√g। g কমলে T বাড়বে, অর্থাৎ দোলক ধীরে চলবে (√6 গুণ ধীরে)।</p>
+            <p><strong>উত্তর:</strong> [D] √6 গুণ ধীরে চলবে</p>
+
+            <h4>প্রশ্ন ১৭: কোনো বস্তুর ওজন পৃথিবীর কেন্দ্রে কত?</h4>
+            <p><strong>উত্তর:</strong> শূন্য (কারণ পৃথিবীর কেন্দ্রে g-এর মান শূন্য)</p>
+
+            <h4>প্রশ্ন ১৮: পৃথিবী থেকে উচ্চতা বাড়ালে বস্তুর ওজনের কী পরিবর্তন হয়?</h4>
+            <p><strong>উত্তর:</strong> [C] কমবে (কারণ g-এর মান কমে যায়)</p>
+            
+            <h4>প্রশ্ন ১৯: একটি বস্তুর ওজন কোথায় সর্বাধিক হবে?</h4>
+            <p><strong>উত্তর:</strong> [C] পৃথিবীর পৃষ্ঠে (আরো নির্দিষ্টভাবে বললে মেরু অঞ্চলে)</p>
+            
+            <h4>প্রশ্ন ২০: একটি বস্তুর ওজন ৯.৮ নিউটন হলে তার ভর কত?</h4>
+            <p><strong>ব্যাখ্যা:</strong> W = mg => 9.8 = m × 9.8 => m = 1 kg</p>
+            <p><strong>উত্তর:</strong> 1 kg</p>
+            
+            <h4>প্রশ্ন ২১: আপেক্ষিকতাবাদ তত্ত্বের প্রবক্তা কে?</h4>
+            <p><strong>উত্তর:</strong> [C] আইনস্টাইন</p>
+            
+            <h4>প্রশ্ন ২২: রকেটের জ্বালানী হিসেবে কী ব্যবহৃত হয়?</h4>
+            <p><strong>উত্তর:</strong> [C] তরল হাইড্রোজেন (এবং জারক হিসেবে তরল অক্সিজেন)</p>
+        </div>
+
+       
+
+        <h2>ধন্যবাদ</h2>
+    </div>
+
+    <nav class="navigation">
+        <a href="class2.html" class="nav-button">পূর্ববর্তী</a>
+        <a href="class1.html" class="nav-button">1</a>
+        <a href="class2.html" class="nav-button">2</a>
+        <a href="class3.html" class="nav-button active">3</a>
+        <a href="class4.html" class="nav-button">4</a>
+        <a href="class4.html" class="nav-button">পরবর্তী</a>
+        <a href="../index.html" class="nav-button home-button">Home</a>
+    </nav>
+    
+    <footer>
+        <p>কপিরাইট © 2024 - সর্বস্বত্ব সংরক্ষিত।</p>
+        <p>ডিজাইন ও ডেভেলপমেন্ট: <strong>কেশব সরকার</strong></p>
+    </footer>
+
+    <button id="scrollToTopBtn" class="scroll-button" title="উপরে যান">↑</button>
+    <button id="scrollToBottomBtn" class="scroll-button" title="নিচে যান">↓</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeButtons = document.querySelectorAll('.theme-buttons button');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+            function applyTheme(theme) { body.dataset.theme = theme; localStorage.setItem('selected_theme', theme); }
+            function applyMode(mode) {
+                if (mode === 'dark') { body.classList.add('dark-mode'); darkModeToggle.checked = true; } 
+                else { body.classList.remove('dark-mode'); darkModeToggle.checked = false; }
+                localStorage.setItem('selected_mode', mode);
+            }
+            const savedTheme = localStorage.getItem('selected_theme');
+            const savedMode = localStorage.getItem('selected_mode');
+            if (savedTheme) applyTheme(savedTheme);
+            if (savedMode) applyMode(savedMode);
+            themeButtons.forEach(button => { button.addEventListener('click', () => { applyTheme(button.dataset.themeName); }); });
+            darkModeToggle.addEventListener('change', () => { applyMode(darkModeToggle.checked ? 'dark' : 'light'); });
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY, windowHeight = window.innerHeight, bodyHeight = document.body.offsetHeight;
+                scrollToTopBtn.style.display = (scrollPosition > 200) ? 'flex' : 'none';
+                scrollToBottomBtn.style.display = (scrollPosition + windowHeight < bodyHeight - 100) ? 'flex' : 'none';
+            });
+            scrollToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            scrollToBottomBtn.addEventListener('click', () => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); });
+        });
+    </script>
+
+</body>
+</html>

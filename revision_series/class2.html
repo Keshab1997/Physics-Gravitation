@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 02 - অভিকর্ষ ও মহাকর্ষ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+        /* CSS Variables for Theming */
+        :root {
+            --bg-color: #f0f2f5; --container-bg: #ffffff; --text-color: #333333; --heading-color-1: #d81b60;
+            --heading-color-2: #004d40; --heading-color-3: #1a237e; --accent-color: #c2185b; --blockquote-bg: #e3f2fd;
+            --blockquote-border: #2196f3; --table-header-bg: #4caf50; --table-header-text: #ffffff; --nav-button-bg: #fff;
+            --nav-button-text: #333; --nav-button-border: #ccc; --nav-active-bg: #d81b60; --box-shadow-color: rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="forest"] {
+            --bg-color: #f0f4f0; --container-bg: #ffffff; --text-color: #2c3e50; --heading-color-1: #27ae60;
+            --heading-color-2: #16a085; --heading-color-3: #2c3e50; --accent-color: #e67e22; --blockquote-bg: #e8f5e9;
+            --blockquote-border: #27ae60; --table-header-bg: #27ae60;
+        }
+        [data-theme="ocean"] {
+            --bg-color: #eef5ff; --container-bg: #ffffff; --text-color: #34495e; --heading-color-1: #2980b9;
+            --heading-color-2: #3498db; --heading-color-3: #1f618d; --accent-color: #e74c3c; --blockquote-bg: #e4f1fe;
+            --blockquote-border: #3498db; --table-header-bg: #2980b9;
+        }
+        [data-theme="sunset"] {
+            --bg-color: #fff3e0; --container-bg: #ffffff; --text-color: #4e342e; --heading-color-1: #e65100;
+            --heading-color-2: #f57c00; --heading-color-3: #d84315; --accent-color: #bf360c; --blockquote-bg: #fff8e1;
+            --blockquote-border: #f57c00; --table-header-bg: #e65100;
+        }
+        .dark-mode {
+            --bg-color: #121212; --container-bg: #1e1e1e; --text-color: #e0e0e0; --heading-color-1: #bb86fc;
+            --heading-color-2: #03dac6; --heading-color-3: #cf6679; --accent-color: #f48fb1; --blockquote-bg: #2a2a2a;
+            --blockquote-border: #03dac6; --table-header-bg: #3700b3; --nav-button-bg: #2c2c2c; --nav-button-text: #e0e0e0;
+            --nav-button-border: #555; --nav-active-bg: #bb86fc; --box-shadow-color: rgba(255, 255, 255, 0.05);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.8; margin: 0; padding: 20px; transition: background-color 0.3s, color 0.3s; }
+        header { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px 0; }
+        .logo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; box-shadow: 0 4px 12px var(--box-shadow-color); }
+        .container { max-width: 900px; margin: 20px auto; background-color: var(--container-bg); padding: 30px 40px; border-radius: 12px; box-shadow: 0 4px 12px var(--box-shadow-color); transition: background-color 0.3s; }
+        h1, h2, h3, h4 { border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; margin-top: 30px; }
+        h1 { text-align: center; font-size: 2.2em; color: var(--heading-color-1); border-bottom: none; margin: 0; }
+        h2 { font-size: 2em; color: var(--heading-color-2); }
+        h3 { font-size: 1.6em; color: var(--heading-color-3); }
+        h4 { font-size: 1.2em; color: var(--accent-color); border-bottom: none; margin-top: 25px; }
+        p { font-size: 1.1em; }
+        strong { color: var(--accent-color); }
+        blockquote { background-color: var(--blockquote-bg); border-left: 5px solid var(--blockquote-border); margin: 20px 0; padding: 15px 20px; font-style: italic; font-size: 1.1em; border-radius: 5px; }
+        img { max-width: 100%; height: auto; display: block; margin: 25px auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
+        .math-formula { background-color: var(--blockquote-bg); padding: 20px; margin: 20px 0; border-radius: 8px; text-align: center; font-size: 1.3em; font-family: 'Courier New', Courier, monospace; border: 1px solid var(--blockquote-border); color: var(--heading-color-1); overflow-x: auto; }
+        ol, ul { padding-left: 20px; }
+        li { margin-bottom: 10px; padding-left: 10px; }
+        .controls-wrapper { max-width: 900px; margin: 20px auto; padding: 15px; background-color: var(--container-bg); border-radius: 10px; box-shadow: 0 4px 12px var(--box-shadow-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .theme-buttons button { padding: 8px 15px; border: 1px solid var(--nav-button-border); background-color: var(--nav-button-bg); color: var(--nav-button-text); border-radius: 5px; cursor: pointer; font-family: 'Hind Siliguri', sans-serif; font-weight: 600; transition: all 0.2s; }
+        .theme-buttons button:hover { opacity: 0.8; }
+        .dark-mode-toggle { display: flex; align-items: center; gap: 10px; }
+        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--heading-color-1); }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .navigation { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .nav-button { display: inline-block; padding: 10px 15px; border: 1px solid var(--nav-button-border); border-radius: 5px; text-decoration: none; color: var(--nav-button-text); background-color: var(--nav-button-bg); transition: background-color 0.3s, color 0.3s; font-weight: 500; }
+        .nav-button:hover { background-color: #e0e0e0; }
+        .nav-button.active { background-color: var(--nav-active-bg); color: white; border-color: var(--nav-active-bg); }
+        .home-button { background-color: #1e88e5; color: white; border-color: #1e88e5; }
+        .home-button:hover { background-color: #1565c0; }
+        footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 0.9em; color: var(--text-color); opacity: 0.8; }
+        .scroll-button { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background-color: var(--heading-color-1); color: white; border: none; font-size: 24px; cursor: pointer; display: none; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 1000; transition: opacity 0.3s, visibility 0.3s; }
+        #scrollToBottomBtn { bottom: 80px; background-color: var(--heading-color-2); }
+        .scroll-button:hover { opacity: 0.8; }
+    </style>
+</head>
+<body data-theme="default">
+
+    <header>
+        <img src="https://dcassetcdn.com/design_img/3828066/151313/23775964/xb5tdy5af3g15z636zyxbrbm3y_image.jpg" alt="Logo" class="logo">
+        <h1>অভিকর্ষ ও মহাকর্ষ</h1>
+    </header>
+
+    <div class="controls-wrapper">
+        <div class="theme-buttons">
+            <button data-theme-name="default">Default</button>
+            <button data-theme-name="forest">Forest</button>
+            <button data-theme-name="ocean">Ocean</button>
+            <button data-theme-name="sunset">Sunset</button>
+        </div>
+        <div class="dark-mode-toggle">
+            <span>দিন/রাত</span>
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>CLASS NO: 02</h2>
+
+        <h3>অভিকর্ষজ ত্বরণ (g) কাকে বলে? এর মান কত?</h3>
+        <p><strong>সংজ্ঞা:</strong> যখন কোনো বস্তু উপর থেকে নিচে পড়ে, তখন পৃথিবীর টানের কারণে তার গতি বাড়তে থাকে। প্রতি সেকেন্ডে এই গতি যতটা বাড়ে, তাকেই <strong>অভিকর্ষজ ত্বরণ (g)</strong> বলে।</p>
+        <p><strong>g-এর গড় মান:</strong> এর মান হলো <strong>9.8 m/s²</strong>। এর মানে হলো, কোনো বস্তু যখন নিচে পড়ে, তখন প্রতি সেকেন্ডে তার গতিবেগ 9.8 m/s করে বেড়ে যায়।</p>
+        
+        <h3>বস্তুর ভর ও ওজন</h3>
+        <p><strong>ভর (Mass):</strong> কোনো বস্তুর মধ্যে মোট যতটা পদার্থ আছে, সেটাই তার <strong>ভর</strong>। ভর সব জায়গায় একই থাকে, তা সে পৃথিবীতে হোক বা চাঁদে। এর একক হলো কিলোগ্রাম (kg)।</p>
+        <p><strong>ওজন (Weight):</strong> পৃথিবী কোনো বস্তুকে যে বল দিয়ে নিজের দিকে টানে, সেই টান বা বলটাই হলো বস্তুর <strong>ওজন</strong>। ওজন জায়গার সাথে বদলে যায়।</p>
+        <div class="math-formula">ওজন = ভর × অভিকর্ষজ ত্বরণ (g)</div>
+        <p><strong>উদাহরণ:</strong> যদি কোনো বস্তুর ভর ১ কেজি হয়, তাহলে পৃথিবীতে তার ওজন হবে ১ × ৯.৮ = ৯.৮ নিউটন (N)।</p>
+        <img src="https://bigthink.com/wp-content/uploads/2024/08/earth.jpg
+" alt="পৃথিবী এবং চাঁদে বস্তুর ভর ও ওজনের পার্থক্য দেখানো হয়েছে।">
+
+        <h3>মহাকর্ষ ধ্রুবক (G) এবং অভিকর্ষজ ত্বরণ (g)-এর মধ্যে সম্পর্ক</h3>
+        <p>g-এর মান কীসের উপর নির্ভর করে, তা এই সূত্র দিয়ে বোঝা যায়:</p>
+        <div class="math-formula">g = GM / R²</div>
+        <p>এখানে,</p>
+        <ul>
+            <li><strong>G</strong> = মহাকর্ষ ধ্রুবক (এটি একটি নির্দিষ্ট সংখ্যা)</li>
+            <li><strong>M</strong> = পৃথিবীর মোট ভর (পৃথিবী কতটা ভারী)</li>
+            <li><strong>R</strong> = পৃথিবীর ব্যাসার্ধ (পৃথিবী কতটা বড়)</li>
+        </ul>
+
+        <h3>g-এর মান কেন সব জায়গায় সমান নয়?</h3>
+        <img src="https://community.adobe.com/legacyfs/online/1465430_ISS-Around-Globe.gif
+" alt="পৃথিবীর মেরু ও বিষুব অঞ্চলে g-এর মানের পরিবর্তন দেখানো হয়েছে।">
+        <ol>
+            <li><strong>পৃথিবীর বিভিন্ন স্থানে:</strong>
+                <ul>
+                    <li>পৃথিবী পুরোপুরি গোল নয়, কমলালেবুর মতো দুই মেরু অঞ্চলে একটু চ্যাপ্টা। তাই মেরু অঞ্চল পৃথিবীর কেন্দ্রের কাছে হওয়ায় সেখানে g-এর মান <strong>সবচেয়ে বেশি</strong>।</li>
+                    <li>বিষুব অঞ্চল বা নিরক্ষরেখা বরাবর পৃথিবীর ব্যাসার্ধ বেশি, তাই সেখানে g-এর মান <strong>সবচেয়ে কম</strong>।</li>
+                </ul>
+            </li>
+            <li><strong>উচ্চতার কারণে:</strong> আমরা পৃথিবী থেকে যত উপরে যাই (যেমন পাহাড়ে), কেন্দ্রের থেকে দূরত্ব তত বাড়ে। তাই g-এর মান কমে যায়।</li>
+            <li><strong>গভীরতার কারণে:</strong> আমরা পৃথিবীর যত গভীরে যাই (যেমন খনিতে), তখনও g-এর মান কমতে থাকে।</li>
+        </ol>
+
+        <h3>বস্তু আর পৃথিবী একে অপরকে সমান বলে টানলেও বস্তু পৃথিবীর দিকে পড়ে কেন?</h3>
+        <p>ধরুন, আপনি একটি দেয়ালকে ধাক্কা দিলেন। আপনি দেয়ালে যতটা বল দিচ্ছেন, দেয়ালও আপনাকে ঠিক ততটাই বল দিচ্ছে। কিন্তু দেয়ালের ভর অনেক বেশি হওয়ায় সে নড়ে না, আপনিই পিছিয়ে যান।</p>
+        <p>ঠিক তেমনি, পৃথিবী আর একটি আপেল একে অপরকে সমান বলে টানে। কিন্তু পৃথিবীর ভর অনেক বেশি হওয়ায় তার কোনো ত্বরণ হয় না। তাই কম ভরের আপেলটাই পৃথিবীর দিকে ছুটে আসে।</p>
+
+        <h3>কিছু সহজ অঙ্ক ও তার সমাধান</h3>
+        <h4>১. ১ কেজি ও ২ কেজি ভরের দুটি জিনিস ৫০ সেমি দূরে রাখলে তাদের মধ্যে আকর্ষণ বল কত?</h4>
+        <p>এখানে বলের মান হবে <strong>5.336 x 10⁻¹⁰ নিউটন</strong>, যা খুবই সামান্য। তাই আমরা সাধারণত এই বল অনুভব করি না।</p>
+
+        <h4>২. সূর্য ও পৃথিবীর মধ্যে আকর্ষণ বল কত?</h4>
+        <p>সূর্য আর পৃথিবীর ভর অনেক বেশি হওয়ায় তাদের মধ্যে আকর্ষণ বলও 엄청 শক্তিশালী। এর মান প্রায় <strong>3.53 x 10²² নিউটন</strong>। এই বলের কারণেই পৃথিবী সূর্যের চারপাশে ঘোরে।</p>
+
+        <h4>৩. পৃথিবী ৩ কেজি ভরের একটি বস্তুকে কত বল দিয়ে টানে?</h4>
+        <p>বল (অর্থাৎ বস্তুর ওজন) = ভর × g = ৩ × ৯.৮ = <strong>২৯.৪ নিউটন</strong>।</p>
+
+        <h4>৪. দুটি বস্তুর ভর দ্বিগুণ করলে আকর্ষণ বল কত হবে?</h4>
+        <p>ভর দ্বিগুণ করলে বল <strong>৪ গুণ</strong> বেড়ে যাবে।</p>
+
+        <h4>৫. দূরত্ব তিনগুণ করলে আকর্ষণ বল কত হবে?</h4>
+        <p>দূরত্ব তিনগুণ করলে বল কমে গিয়ে <strong>৯ ভাগের ১ ভাগ</strong> হয়ে যাবে।</p>
+
+        <h4>৬. পৃথিবীতে যার ভর ৬০ কেজি, চাঁদে তার ভর কত?</h4>
+        <p>ভর কখনো বদলায় না। তাই চাঁদেও তার ভর <strong>৬০ কেজি</strong> থাকবে।</p>
+
+        <h4>৭. পৃথিবীতে যার ওজন ৬০ কেজি (আসলে ৬০ কেজি ভরের বস্তুর ওজন), চাঁদে তার ওজন কত হবে?</h4>
+        <p>চাঁদের মহাকর্ষ বল পৃথিবীর প্রায় ৬ ভাগের ১ ভাগ। তাই চাঁদে ওজন হবে = (৬০ × ৯.৮) / ৬ ≈ <strong>৯৮ নিউটন</strong>।</p>
+
+        <h4>৮. একটি বস্তু উপর থেকে নিচে পড়লে ৬ সেকেন্ড পর তার গতি ও উচ্চতা কত হবে?</h4>
+        <p><strong>গতিবেগ (v):</strong> v = gt = ৯.৮ × ৬ = <strong>৫৮.৮ মিটার/সেকেন্ড</strong>।<br>
+           <strong>অতিক্রান্ত উচ্চতা (h):</strong> h = ½gt² = ½ × ৯.৮ × (৬)² = <strong>১৭৬.৪ মিটার</strong>।</p>
+
+        <h3>পতনশীল বস্তু কাকে বলে?</h3>
+        <p>যখন কোনো বস্তু শুধুমাত্র পৃথিবীর টানের কারণে (অন্য কোনো বাধা ছাড়া) নিচে পড়তে থাকে, তখন তাকে <strong>পতনশীল বস্তু</strong> বলে।</p>
+        
+        <h3>কৃত্রিম উপগ্রহ কাকে বলে?</h3>
+        <p>মানুষের তৈরি যেসব যন্ত্র পৃথিবীকে বা অন্য কোনো গ্রহকে কেন্দ্র করে একটি নির্দিষ্ট পথে ঘুরতে থাকে, তাদের <strong>কৃত্রিম উপগ্রহ</strong> বলে। যেমন - আবহাওয়ার খবর বা টিভিতে অনুষ্ঠান দেখার জন্য স্যাটেলাইট ব্যবহার হয়।</p>
+        <img src="https://dcx0p3on5z8dw.cloudfront.net/inline-images/aakash_787340600.png
+" alt="পৃথিবীকে কেন্দ্র করে একটি কৃত্রিম উপগ্রহ ঘুরছে।">
+
+        <h3>বড় হ্রদে জোয়ার-ভাটা দেখা যায় না কেন?</h3>
+        <p>জোয়ার-ভাটা হওয়ার জন্য চাঁদের টানে বিশাল পরিমাণ জল ফুলে উঠতে হয়, যা কেবল সমুদ্রে বা মহাসাগরেই সম্ভব। হ্রদের জল সেই তুলনায় অনেক কম, তাই চাঁদের টানের প্রভাব সেখানে বোঝা যায় না।</p>
+
+        <h2>ধন্যবাদ</h2>
+    </div>
+
+    <nav class="navigation">
+        <a href="class1.html" class="nav-button">পূর্ববর্তী</a>
+        <a href="class1.html" class="nav-button">1</a>
+        <a href="class2.html" class="nav-button active">2</a>
+        <a href="class3.html" class="nav-button">3</a>
+        <a href="class4.html" class="nav-button">4</a>
+        <a href="class3.html" class="nav-button">পরবর্তী</a>
+        <a href="../index.html" class="nav-button home-button">Home</a>
+    </nav>
+    
+    <footer>
+        <p>কপিরাইট © 2024 - সর্বস্বত্ব সংরক্ষিত।</p>
+        <p>ডিজাইন ও ডেভেলপমেন্ট: <strong>কেশব সরকার</strong></p>
+    </footer>
+
+    <button id="scrollToTopBtn" class="scroll-button" title="উপরে যান">↑</button>
+    <button id="scrollToBottomBtn" class="scroll-button" title="নিচে যান">↓</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeButtons = document.querySelectorAll('.theme-buttons button');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            const scrollToBottomBtn = document.getElementById('scrollToBottomBtn');
+            function applyTheme(theme) { body.dataset.theme = theme; localStorage.setItem('selected_theme', theme); }
+            function applyMode(mode) {
+                if (mode === 'dark') { body.classList.add('dark-mode'); darkModeToggle.checked = true; } 
+                else { body.classList.remove('dark-mode'); darkModeToggle.checked = false; }
+                localStorage.setItem('selected_mode', mode);
+            }
+            const savedTheme = localStorage.getItem('selected_theme');
+            const savedMode = localStorage.getItem('selected_mode');
+            if (savedTheme) applyTheme(savedTheme);
+            if (savedMode) applyMode(savedMode);
+            themeButtons.forEach(button => { button.addEventListener('click', () => { applyTheme(button.dataset.themeName); }); });
+            darkModeToggle.addEventListener('change', () => { applyMode(darkModeToggle.checked ? 'dark' : 'light'); });
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY, windowHeight = window.innerHeight, bodyHeight = document.body.offsetHeight;
+                scrollToTopBtn.style.display = (scrollPosition > 200) ? 'flex' : 'none';
+                scrollToBottomBtn.style.display = (scrollPosition + windowHeight < bodyHeight - 100) ? 'flex' : 'none';
+            });
+            scrollToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            scrollToBottomBtn.addEventListener('click', () => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); });
+        });
+    </script>
+
+</body>
+</html>
