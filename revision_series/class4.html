@@ -70,6 +70,7 @@
 
         /* --- MCQ Specific Styles --- */
         #mcqSetSelector { padding: 10px; font-size: 1em; font-family: 'Hind Siliguri', sans-serif; border: 1px solid var(--nav-button-border); border-radius: 5px; background-color: var(--nav-button-bg); color: var(--nav-button-text); }
+        #score-tracker { font-size: 1.2em; font-weight: bold; text-align: right; margin-bottom: 20px; color: var(--heading-color-2); }
         .mcq-question {
             margin-bottom: 40px; padding: 20px; border-radius: 10px;
             border: 2px solid transparent; /* Prevents layout shift on highlight */
@@ -128,6 +129,7 @@
 
     <div class="container">
         <h2>CLASS NO: 04 - MCQ Practice Session</h2>
+        <div id="score-tracker"></div>
         <div id="mcq-container">
             <!-- Questions are dynamically loaded here -->
         </div>
@@ -153,8 +155,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- THEME, MODE, & SCROLL BUTTON LOGIC ---
-            // This part is unchanged and works correctly.
+            // --- AUDIO SETUP ---
+            // Ensure correct.mp3 and wrong.mp3 files are in the same folder as the HTML file.
+            const correctSound = new Audio('correct.mp3');
+            const wrongSound = new Audio('wrong.mp3');
+
+            // --- THEME, MODE, & SCROLL BUTTON LOGIC (Unchanged) ---
             const themeButtons = document.querySelectorAll('.theme-buttons button');
             const darkModeToggle = document.getElementById('darkModeToggle');
             const body = document.body;
@@ -180,8 +186,9 @@
             scrollToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
             scrollToBottomBtn.addEventListener('click', () => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); });
 
-            // --- INTERACTIVE MCQ LOGIC (FINAL, ROBUST VERSION) ---
+            // --- INTERACTIVE MCQ LOGIC (UPDATED WITH AUDIO) ---
             const mcqData = [
+                // ... (আপনার mcqData এখানে অপরিবর্তিত থাকবে) ...
                 { q: "‘মাধ্যাকর্ষণ’ আবিষ্কার করেন কে?", o: ["গ্যালিলিও", "নিউটন", "আর্কিমিডিস", "এডিসন"], a: 1, ex: "স্যার আইজ্যাক নিউটন মাধ্যাকর্ষণ বা অভিকর্ষ বলের সার্বজনীন সূত্রটি আবিষ্কার করেন।" },
                 { q: "মহাকর্ষীয় ধ্রুবক (G)-এর CGS একক কী?", o: ["cm⁴ sec⁻¹ gm⁻²", "cm sec⁻³ gm⁻²", "cm³ sec⁻² gm⁻¹", "gm cm⁻³ sec⁻²"], a: 2, ex: "মহাকর্ষ ধ্রুবক (G) এর CGS একক হলো cm³ sec⁻² gm⁻¹ বা dyne·cm²/g²।" },
                 { q: "দুটি বস্তুর মধ্যে একটির ভর ও তাদের ব্যবধান দ্বিগুণ করা হলে মহাকর্ষ বলের কী পরিবর্তন হবে?", o: ["বল একই থাকে", "বল দ্বিগুণ হয়", "বল অর্ধেক হয়", "বল ৪ গুণ হয়"], a: 2, ex: "সূত্রানুযায়ী, F ∝ m/r²। ভর দ্বিগুণ (2m) এবং দূরত্ব দ্বিগুণ (2r) হলে, নতুন বল হবে F' ∝ 2m/(2r)² = 2m/4r² = ½ (m/r²)। সুতরাং বল অর্ধেক হবে।" },
@@ -190,12 +197,12 @@
                 { q: "প্রকৃতির মৌলিক বলগুলোর মধ্যে সবচেয়ে দুর্বল বা ক্ষীণ শক্তি কোনটি?", o: ["অভিকর্ষজ শক্তি", "বৈদ্যুতিক শক্তি", "চুম্বকীয় শক্তি", "সবল নিউক্লিয় বল"], a: 0, ex: "প্রকৃতির চারটি মৌলিক বলের মধ্যে মহাকর্ষ বা অভিকর্ষ বল সবচেয়ে দুর্বল।" },
                 { q: "সমবৃত্তীয় গতিতে চলমান বস্তুর ত্বরণের অভিমুখ কোন দিকে হয়?", o: ["গতির অভিমুখে", "বৃত্তপথের স্পর্শক বরাবর", "বেগের অভিমুখে", "বেগের লম্ব অভিমুখে"], a: 3, ex: "সমবৃত্তীয় গতিতে কেন্দ্রাভিমুখী ত্বরণ সবসময় বেগের দিকের সাথে লম্বভাবে এবং বৃত্তের কেন্দ্রের দিকে কাজ করে।" },
                 { q: "হেনরি ক্যাভেন্ডিসের পরীক্ষায় G-এর মান কত পাওয়া যায়?", o: ["7.75×10⁻¹³ Nm²/kg²", "6.67×10⁻¹¹ Nm²/kg²", "5.75×10⁻¹⁰ Nm²/kg²", "3.75×10⁻⁹ Nm²/kg²"], a: 1, ex: "হেনরি ক্যাভেন্ডিসের পরীক্ষার মাধ্যমে প্রাপ্ত মহাকর্ষীয় ধ্রুবক (G) এর স্বীকৃত মান হলো 6.67 × 10⁻¹¹ Nm²/kg²।" },
-                { q: "অবাধে পতনশীল বস্তুর ক্ষেত্রে কোনটি সঠিক?", o: ["এটি সমবেগে চলে", "এর ভরবেগ অপরিবর্তিত থাকে", "এর গতি শুধুমাত্র অভিকর্ষ দ্বারা প্রভাবিত হয়", "এর গতি অভিকর্ষ এবং বায়ুর প্রতিরোধ দ্বারা প্রভাবিত হয়"], a: 3, ex: "বাস্তবে, অবাধে পতনশীল বস্তু অভিকর্ষ বল এবং বায়ুর বাধা—উভয় দ্বারাই প্রভাবিত হয়। তবে পদার্থবিজ্ঞানের আদর্শ গণনায় বায়ুর বাধা উপেক্ষা করা হয়।" },
+                { q: "অবাধে পতনশীল বস্তুর ক্ষেত্রে কোনটি সঠিক?", o: ["এটি সমবেগে চলে", "এর ভরবেগ অপরিবর্তিত থাকে", "এর গতি শুধুমাত্র অভিকর্ষ দ্বারা প্রভাবিত হয়", "এর গতি বায়ুর প্রতিরোধ দ্বারাও প্রভাবিত হয়"], a: 2, ex: "পদার্থবিজ্ঞানে 'অবাধে পতনশীল বস্তু'-র আদর্শ সংজ্ঞা হলো, যে বস্তুর গতি শুধুমাত্র অভিকর্ষ বল দ্বারা প্রভাবিত হয় এবং বায়ুর বাধাকে উপেক্ষা করা হয়। বাস্তব ক্ষেত্রে বায়ুর বাধা থাকে, কিন্তু সংজ্ঞানুযায়ী উত্তর এটিই।" },
                 { q: "চলন্ত বিমান থেকে বোমা ফেলা হলে বোমাটি কোন পথে যাবে?", o: ["বক্রপথে চলে পাইলটের পিছনে পড়বে", "বক্রপথে চলে পাইলটের সামনে পড়বে", "উল্লম্বভাবে নীচে পড়বে", "কিছু সময় বায়ুতে স্থির থাকবে"], a: 0, ex: "বোমাটি বিমানের অনুভূমিক গতি লাভ করে, তাই এটি একটি অধিবৃত্তাকার (parabolic) পথে চলে এবং বায়ুর বাধার কারণে পাইলটের কিছুটা পিছনে গিয়ে পড়ে।" },
                 { q: "বৃত্তাকার পথে ঘোরার সময় সুতায় বাঁধা একটি পাথর ছিঁড়ে গেলে কোন দিকে যাবে?", o: ["পাথরটি ওই মুহূর্তের স্পর্শক বরাবর সোজা পথে যাবে", "পাথরটি ব্যাসার্ধ বরাবর বাইরের দিকে যাবে", "পাথরটি ব্যাসার্ধ বরাবর ভেতরের দিকে যাবে", "পাথরটি স্থির হয়ে যাবে"], a: 0, ex: "কেন্দ্রাভিমুখী বলের অনুপস্থিতিতে, বস্তুটি তার জড়তার কারণে ওই মুহূর্তের বেগের দিকে, অর্থাৎ স্পর্শক বরাবর সোজা পথে চলে যায়।" },
                 { q: "বৃত্তাকার পথে বাঁক নেওয়ার সময় গাড়ির কোন বলের প্রয়োজন হয়?", o: ["স্থিতি বল", "কেন্দ্রাভিমুখী বল", "পৃথিবীর মাধ্যাকর্ষণজনিত আকর্ষণ", "কোনটাই নয়"], a: 1, ex: "যেকোনো বস্তুকে বৃত্তাকার পথে ঘোরানোর জন্য একটি কেন্দ্রাভিমুখী বলের প্রয়োজন হয়। গাড়ির ক্ষেত্রে এই বলটি আসে চাকা ও রাস্তার ঘর্ষণ থেকে।" },
                 { q: "বিশ্বের আকর্ষণ তত্ত্বের প্রথম প্রবক্তা কে?", o: ["কেপলার", "গ্যালিলিও", "নিউটন", "কোপারনিকাস"], a: 2, ex: "স্যার আইজ্যাক নিউটন মহাকর্ষের সার্বজনীন তত্ত্বটি প্রথম প্রদান করেন।" },
-                { q: "দুধ মন্থন করলে যে বলের কারণে ননী আলাদা হয়, তা কী?", o: ["ঘর্ষণ বল", "অভিকর্ষ বল", "কেন্দ্রাভিমুখী বল", "কেন্দ্রবিমুখ বল"], a: 3, ex: "দুধ মন্থনের সময় কেন্দ্রবিমুখ বা অপকেন্দ্র বলের (Centrifugal force) কারণে হালকা ননী পাত্রের কেন্দ্রের দিকে সরে আসে এবং আলাদা হয়ে যায়।" },
+                { q: "দুধ মন্থন করলে যে বলের কারণে ননী আলাদা হয়, তা কী?", o: ["ঘর্ষণ বল", "অভিকর্ষ বল", "কেন্দ্রাভিমুখী বল", "কেন্দ্রবিমুখ বল"], a: 3, ex: "দুধ মন্থনের সময় কেন্দ্রবিমুখ বা অপকেন্দ্র বলের (Centrifugal force) প্রভাবে বেশি ঘনত্বের অংশ (দুধ) বাইরের দিকে ছিটকে যায়, ফলে কম ঘনত্বের অংশ (ননী) মাঝখানে এসে জমা হয়।" },
                 { q: "একটি রকেটের সবচেয়ে বেশি শক্তি কখন লাগে?", o: ["পৃথিবী থেকে উপরে ওঠার সময়", "চাঁদে নামার সময়", "চাঁদ থেকে ওঠার সময়", "পৃথিবীতে ফিরে আসার সময়"], a: 0, ex: "পৃথিবীর অভিকর্ষ বল চাঁদের চেয়ে প্রায় ৬ গুণ বেশি। তাই এই শক্তিশালী অভিকর্ষকে উপেক্ষা করে উপরে উঠতে রকেটের সবচেয়ে বেশি শক্তি প্রয়োজন হয়।" },
                 { q: "সরল দোলগতিতে একটি কণার গতিশক্তি কখন শূন্য হয়?", o: ["কখনোই শূন্য হয় না", "সাম্য অবস্থানে", "চরম অবস্থানে (দুই প্রান্তে)", "সর্বদা সমান থাকে"], a: 2, ex: "সরল দোলগতিতে কণাটি যখন তার গতিপথের দুই প্রান্তে পৌঁছায়, তখন মুহূর্তের জন্য স্থির হয়ে যায়। তাই সেই চরম অবস্থানগুলিতে গতিশক্তি শূন্য হয়।" },
                 { q: "নিচের কোনটি ভুল জোড়?", o: ["পর্যায়বৃত্ত গতি—পৃথিবীর ঘূর্ণন", "সরলরৈখিক গতি—শূন্যে ছোঁড়া পাথর", "ঘূর্ণন গতি—উইন্ডমিলের ব্লেড", "দোল গতি—নদীর ঢেউ"], a: 1, ex: "শূন্যে ছুঁড়ে দেওয়া পাথরের গতিপথ সরলরৈখিক নয়, বরং অধিবৃত্তাকার বা বক্রপথ। তাই এই জোড়টি ভুল।" },
@@ -214,25 +221,32 @@
 
             const mcqContainer = document.getElementById('mcq-container');
             const mcqSetSelector = document.getElementById('mcqSetSelector');
-            let currentQuestionIndex = -1; // Tracks the logical index of the active question
-            let isEnterLocked = false; // Flag to debounce Enter key presses
+            const scoreTracker = document.getElementById('score-tracker');
+            
+            let currentQuestionIndex = -1;
+            let isEnterLocked = false;
+            let score = 0;
+            let totalQuestionsInSet = 0;
 
-            // Function to generate and display MCQs for a given set
             function generateMCQs(setNumber) {
                 mcqContainer.innerHTML = '';
-                currentQuestionIndex = -1; // Reset index for the new set
+                currentQuestionIndex = -1;
+                score = 0;
+                
                 const questionsPerSet = 10;
                 const start = (setNumber - 1) * questionsPerSet;
-                const end = start + questionsPerSet;
+                const end = Math.min(start + questionsPerSet, mcqData.length);
                 const questionSet = mcqData.slice(start, end);
+
+                totalQuestionsInSet = questionSet.length;
+                updateScoreDisplay();
 
                 questionSet.forEach((item, index) => {
                     const globalIndex = start + index;
                     const questionDiv = document.createElement('div');
                     questionDiv.className = 'mcq-question';
                     questionDiv.id = `q-${globalIndex}`;
-                    questionDiv.dataset.setIndex = index; // Store the 0-based index within the current set
-
+                    
                     let optionsHTML = item.o.map((option, i) => 
                         `<div class="mcq-option" data-index="${i}">${String.fromCharCode(65 + i)}) ${option}</div>`
                     ).join('');
@@ -247,8 +261,11 @@
                 setupOptionListeners();
                 setupIntersectionObserver();
             }
+            
+            function updateScoreDisplay() {
+                scoreTracker.textContent = `স্কোর: ${score} / ${totalQuestionsInSet}`;
+            }
 
-            // Function to handle click on an option
             function handleOptionClick(e) {
                 const selectedOption = e.target.closest('.mcq-option');
                 if (!selectedOption) return;
@@ -260,8 +277,14 @@
                 const correctIndex = mcqData[globalIndex].a;
                 if (selectedIndex === correctIndex) {
                     selectedOption.classList.add('correct');
+                    correctSound.currentTime = 0;
+                    correctSound.play();
+                    score++;
+                    updateScoreDisplay();
                 } else {
                     selectedOption.classList.add('incorrect');
+                    wrongSound.currentTime = 0;
+                    wrongSound.play();
                     questionDiv.querySelector(`.mcq-option[data-index="${correctIndex}"]`).classList.add('correct');
                 }
                 questionDiv.querySelector('.mcq-explanation').style.display = 'block';
@@ -272,25 +295,23 @@
             }
             
             mcqSetSelector.addEventListener('change', (e) => {
-                generateMCQs(e.target.value);
+                generateMCQs(parseInt(e.target.value, 10));
             });
 
-            // Keyboard navigation logic
             document.addEventListener('keydown', (e) => {
                 const activeQuestion = document.querySelector('.mcq-question.active-question');
+                if (!activeQuestion) return;
                 
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    if (isEnterLocked || !activeQuestion) return;
-
+                    if (isEnterLocked) return;
                     isEnterLocked = true;
                     const nextQuestion = activeQuestion.nextElementSibling;
                     if (nextQuestion) {
                         nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                    setTimeout(() => { isEnterLocked = false; }, 400); // Debounce for 400ms
-
-                } else if (['1', '2', '3', '4'].includes(e.key) && activeQuestion && !activeQuestion.classList.contains('answered')) {
+                    setTimeout(() => { isEnterLocked = false; }, 400);
+                } else if (['1', '2', '3', '4'].includes(e.key) && !activeQuestion.classList.contains('answered')) {
                     e.preventDefault();
                     const optionIndex = parseInt(e.key) - 1;
                     const optionToClick = activeQuestion.querySelector(`.mcq-option[data-index="${optionIndex}"]`);
@@ -300,24 +321,22 @@
                 }
             });
 
-            // Observer to highlight the question currently in the viewport
             function setupIntersectionObserver() {
                 const questions = document.querySelectorAll('.mcq-question');
+                if (questions.length === 0) return;
+                
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
+                        const prevActive = document.querySelector('.mcq-question.active-question');
                         if (entry.isIntersecting) {
-                            const prevActive = document.querySelector('.mcq-question.active-question');
-                            if (prevActive) {
-                                prevActive.classList.remove('active-question');
-                            }
+                            if (prevActive) prevActive.classList.remove('active-question');
                             entry.target.classList.add('active-question');
                         }
                     });
-                }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 }); // Highlights question in the middle 20% of the screen
+                }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
                 questions.forEach(q => observer.observe(q));
             }
             
-            // Initial load for the first set of questions
             generateMCQs(1);
         });
     </script>
